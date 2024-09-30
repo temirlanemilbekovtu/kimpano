@@ -21,3 +21,7 @@ project/assembly_name="Kimpano"
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/BuffaloExtension/plugin.cfg")
+
+`[layer_names]`
+
+`2d_physics/layer_1="Ground"2d_physics/layer_2="PushBox"2d_physics/layer_3="HurtBox"2d_physics/layer_4="HitBox"`
