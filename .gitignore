@@ -12,3 +12,5 @@ export_presets.cfg
 # JetBrains specific ignores
 .idea/
 
+# Fork-flow ignores
+experimental/
