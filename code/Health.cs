@@ -3,9 +3,8 @@ namespace Godot;
 [GlobalClass]
 public partial class Health : Area2D
 {
-    public delegate void GetDamage();
-
-    public event GetDamage Damaged;
+    public delegate void DamageHandler();
+    public event DamageHandler Damaged;
 
     public override void _Ready() {
         Connect("area_entered", new Callable(this, "OnHitBoxAreaEntered"));

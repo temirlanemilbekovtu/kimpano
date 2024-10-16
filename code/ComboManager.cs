@@ -8,15 +8,14 @@ namespace Godot;
 public partial class ComboManager : Node
 {
     public delegate void ComboHandler(Combo combo);
-
     public event ComboHandler ComboAvailable;
 
-    [Export] private InputHandler _inputHandler;
-    [Export] private float _moveInputInterval = 0.25f;
-    [Export] private Array<Combo> _combos;
+    [Export] private InputHandler   _inputHandler;
+    [Export] private float          _moveInputInterval = 0.25f;
+    [Export] private Array<Combo>   _combos;
 
-    private List<MoveInputInfo> _moveInputLog = new();
-    private Combo _currentCombo;
+    private List<MoveInputInfo>     _moveInputLog = new();
+    private Combo                   _currentCombo;
 
     public override void _Ready() {
         if (_inputHandler is null) {
@@ -33,28 +32,28 @@ public partial class ComboManager : Node
     }
 
     private Combo GetAvailableCombo() {
-        var logSize = _moveInputLog.Count;
-        for (var i = 0; i < logSize; ++i) {
-            var moveKeys = _moveInputLog.GetRange(i, logSize - i).Select(x => x.MoveKey).ToArray();
-            Combo retCombo = FindCombo(moveKeys);
-            if (retCombo is not null) {
-                return retCombo;
+        var moveInputLogSize = _moveInputLog.Count;
+        for (var i = 0; i < moveInputLogSize; ++i) {
+            var lastMoveKeys = _moveInputLog.GetRange(i, moveInputLogSize - i).Select(x => x.MoveKey).ToArray();
+            Combo result = FindCombo(lastMoveKeys);
+            if (result is not null) {
+                return result;
             }
         }
 
         return null;
     }
 
-    private void OnMoveInputUpdate(MoveInputInfo miInfo) {
-        if (!miInfo.IsPressed) {
+    private void OnMoveInputUpdate(MoveInputInfo moveInputInfo) {
+        if (!moveInputInfo.IsPressed) {
             return;
         }
 
-        if (_moveInputLog.Count != 0 && miInfo.TimeMsec - _moveInputLog[^1].TimeMsec > _moveInputInterval) {
+        if (_moveInputLog.Count != 0 && moveInputInfo.TimeMsec - _moveInputLog[^1].TimeMsec > _moveInputInterval) {
             _moveInputLog.Clear();
         }
 
-        _moveInputLog.Add(miInfo);
+        _moveInputLog.Add(moveInputInfo);
 
         Combo availableCombo = GetAvailableCombo();
         if (availableCombo is not null) {
@@ -62,7 +61,7 @@ public partial class ComboManager : Node
         }
     }
 
-    public Combo GetComboOrNull(StringName name) {
+    public Combo FindComboOrNull(StringName name) {
         return _combos.Single(x => x.Name == name);
     }
 }

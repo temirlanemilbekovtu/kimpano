@@ -3,7 +3,7 @@ namespace Godot;
 [GlobalClass]
 public abstract partial class State : Node
 {
-    [Export] private bool                   _isInitial;
+    [Export] private bool _isInitial;
 
     protected StateMachine                  MyStateMachine;
     protected ComboManager                  MyComboManager;
@@ -32,13 +32,13 @@ public abstract partial class State : Node
         MyStateMachine.AddState(this);
     }
 
-    public virtual void StateInput(MoveInputInfo miInfo) {
+    public virtual void HandleInput(MoveInputInfo moveInputInfo) {
     }
 
-    public virtual void StateHandleCombo(Combo combo) {
+    public virtual void HandleCombo(Combo combo) {
     }
 
-    public virtual void StateHandleDamage() {
+    public virtual void HandleDamage() {
     }
 
     public virtual void StateProcess(double delta) {

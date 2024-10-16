@@ -11,11 +11,10 @@ public partial class InputHandler : Node
 
     public event MoveInputHandler MoveInputUpdate;
 
-    [Export] private Array<Key> _keys = new();
-    [Export] private Array<MoveKey> _moveKeys = new();
+    [Export] private Array<Key>         _keys = new();
+    [Export] private Array<MoveKey>     _moveKeys = new();
 
-    private Generic.Dictionary<Key, MoveKey> _inputMap = new();
-    private Generic.List<MoveInputInfo> _moveLog = new();
+    private Generic.Dictionary<Key, MoveKey>    _inputMap = new();
 
     public override void _Input(InputEvent @event) {
         if (@event.IsEcho() || @event is not InputEventKey eventKey) {
@@ -27,9 +26,8 @@ public partial class InputHandler : Node
             return;
         }
 
-        MoveInputInfo newMiInfo = new(_inputMap[key], eventKey.IsPressed(), Time.GetTicksMsec());
-        _moveLog.Add(newMiInfo);
-        MoveInputUpdate?.Invoke(newMiInfo);
+        MoveInputInfo newMoveInputInfo = new(_inputMap[key], eventKey.IsPressed(), Time.GetTicksMsec());
+        MoveInputUpdate?.Invoke(newMoveInputInfo);
     }
 
     public override void _Ready() {
@@ -37,19 +35,6 @@ public partial class InputHandler : Node
             _inputMap.Add(_keys[i], _moveKeys[i]);
         }
     }
-
-    /*
-    public bool TryGetLog(int count, out MoveInputInfo[] targetLog) {
-        targetLog = null;
-        int logSize = _moveLog.Count;
-        if (count == 0 || logSize < Math.Abs(count)) {
-            return false;
-        }
-
-        targetLog = count < 0 ? _moveLog.GetRange(logSize - count, count).ToArray() : _moveLog.GetRange(0, count).ToArray();
-        return true;
-    }
-    */
 }
 
 public enum MoveKey
@@ -63,4 +48,11 @@ public enum MoveKey
     MidKick,
     HighKick,
     Block
+}
+
+public enum Direction
+{
+    None = 0,
+    Forward = -1,
+    Backward = 1
 }

@@ -5,16 +5,18 @@ namespace Godot;
 [GlobalClass]
 public partial class StateMachine : Node
 {
-    [Export] private InputHandler _inputHandler;
-    [Export] private ComboManager _comboManager;
-    [Export] private ExtendedAnimationPlayer _extAnimPlayer;
-    [Export] private Health _health;
+    [Export] private InputHandler               _inputHandler;
+    [Export] private ComboManager               _comboManager;
+    [Export] private ExtendedAnimationPlayer    _extAnimPlayer;
+    [Export] private Health                     _health;
 
-    private List<State> _states = new();
-    private State _initialState;
-    private State _currentState;
+    private List<State>     _states = new();
+    private State           _initialState;
+    private State           _currentState;
     
-    public ExtendedAnimationPlayer ExtAnimPlayer => _extAnimPlayer;
+    public ExtendedAnimationPlayer ExtAnimPlayer {
+        get => _extAnimPlayer;
+    }
 
     public override void _Ready() {
         if (_inputHandler is null) {
@@ -82,15 +84,15 @@ public partial class StateMachine : Node
         _currentState?.StatePhysicsProcess(delta);
     }
 
-    private void OnMoveInputUpdate(MoveInputInfo miInfo) {
-        _currentState?.StateInput(miInfo);
+    private void OnMoveInputUpdate(MoveInputInfo moveInputInfo) {
+        _currentState?.HandleInput(moveInputInfo);
     }
 
     private void OnComboAvailable(Combo combo) {
-        _currentState?.StateHandleCombo(combo);
+        _currentState?.HandleCombo(combo);
     }
 
     private void OnDamaged() {
-        _currentState?.StateHandleDamage();
+        _currentState?.HandleDamage();
     }
 }

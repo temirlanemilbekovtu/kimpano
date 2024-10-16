@@ -6,8 +6,8 @@ namespace Godot;
 [GlobalClass]
 public partial class ExtendedAnimationPlayer : AnimationPlayer
 {
-    public delegate void GetAnimationTag(string tag);
-    public event GetAnimationTag AnimationEvent;
+    public delegate void AnimationEventHandler(string tag);
+    public event AnimationEventHandler AnimationEvent;
     
     [Export] public string[] Tags {
         get => _tags.ToArray();
