@@ -6,14 +6,14 @@ public partial class StateIdle : State
     // TODO: add animation
     
     [ExportGroup("Physics")] 
-    [Export] private CharacterBody2D    _characterBody;
+    [Export] private CharacterBody2D _characterBody;
 
     [ExportGroup("Transitions")]
-    [Export] private StateMove          _moveState;
-    [Export] private StateDash          _dashState;
-    [Export] private StateSwing         _swingState;
-    [Export] private StateParry         _parryState;
-    [Export] private StateDeath         _deathState;
+    [Export] private StateMove  _moveState;
+    [Export] private StateDash  _dashState;
+    [Export] private StateSwing _swingState;
+    [Export] private StateParry _parryState;
+    [Export] private StateDeath _deathState;
     
     private Direction _previousDirection;
 
@@ -33,13 +33,12 @@ public partial class StateIdle : State
                 if (!moveInputInfo.IsPressed) {
                     break;
                 }
-                var direction = inputMoveKey == MoveKey.Back ? Direction.Backward : Direction.Forward;
-                var directionStr = ((int) direction).ToString();
+                var direction = InputHandler.MoveKeyToDirection(inputMoveKey);
                 if (_previousDirection == direction) {
-                    MyStateMachine.SwitchState(_dashState, new[] { directionStr });
+                    MyStateMachine.SwitchState(_dashState, new[] { direction.ToString() });
                     _previousDirection = Direction.None;
                 } else {
-                    MyStateMachine.SwitchState(_moveState, new[] { directionStr });
+                    MyStateMachine.SwitchState(_moveState, new[] { direction.ToString() });
                     _previousDirection = direction;
                 }
                 break;
