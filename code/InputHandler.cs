@@ -35,6 +35,28 @@ public partial class InputHandler : Node
             _inputMap.Add(_keys[i], _moveKeys[i]);
         }
     }
+
+    public static Direction MoveKeyToDirection(MoveKey moveKey) {
+        switch (moveKey) {
+            case MoveKey.Back:
+                return Direction.Backward;
+            case MoveKey.Front:
+                return Direction.Forward;
+            default:
+                return Direction.None;
+        }
+    }
+
+    public static Direction GetOppositeDirection(Direction dir) {
+        switch(dir) {
+            case Direction.Forward:
+                return Direction.Backward;
+            case Direction.Backward:
+                return Direction.Forward;
+            default:
+                return Direction.None;
+        }
+    }
 }
 
 public enum MoveKey
