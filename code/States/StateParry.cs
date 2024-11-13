@@ -17,7 +17,7 @@ public partial class StateParry : State
     private bool  _isQuitting;
     
     public override void _Ready() {
-        _timer.Connect("timeout", new Callable(this, "OnTimerTimeout"));
+        _timer.Timeout += OnTimerTimeout;
     }
 
     public override void HandleInput(MoveInputInfo moveInputInfo) {

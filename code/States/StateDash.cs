@@ -23,7 +23,7 @@ public partial class StateDash : State
     private Timer   _timer;
 
     public override void _Ready() {
-        _timer.Connect("timeout", new Callable(this, "OnTimerTimeout"));
+        _timer.Timeout += OnTimerTimeout;
     }
 
     public override void HandleInput(MoveInputInfo moveInputInfo) {
