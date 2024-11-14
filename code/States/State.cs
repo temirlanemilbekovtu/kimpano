@@ -7,7 +7,7 @@ public abstract partial class State : Node
 
     protected StateMachine                  MyStateMachine;
     protected ComboManager                  MyComboManager;
-    protected ExtendedAnimationPlayer       MyAnimationPlayer;
+    protected AnimationPlayer               MyAnimationPlayer;
 
     public bool IsInitial { 
                 get => _isInitial; 
@@ -22,7 +22,7 @@ public abstract partial class State : Node
             return;
         }
 
-        MyAnimationPlayer = MyStateMachine.ExtAnimPlayer;
+        MyAnimationPlayer = MyStateMachine.AnimPlayer;
         if (MyAnimationPlayer is null) {
             GD.Print("Couldn't get AnimationPlayer, free queued.");
             QueueFree();

@@ -7,15 +7,15 @@ public partial class StateMachine : Node
 {
     [Export] private InputHandler               _inputHandler;
     [Export] private ComboManager               _comboManager;
-    [Export] private ExtendedAnimationPlayer    _extAnimPlayer;
+    [Export] private AnimationPlayer            _animPlayer;
     [Export] private Health                     _health;
 
     private List<State>     _states = new();
     private State           _initialState;
     private State           _currentState;
     
-    public ExtendedAnimationPlayer ExtAnimPlayer {
-        get => _extAnimPlayer;
+    public AnimationPlayer AnimPlayer {
+        get => _animPlayer;
     }
 
     public override void _Ready() {
