@@ -23,6 +23,7 @@ public partial class StateCooldown : State
 	}
 
 	public override void StateExit() {
+		MyAnimationPlayer.Stop();
 		MyAnimationPlayer.AnimationFinished -= OnAnimationFinished;
 	}
 

@@ -54,6 +54,7 @@ public partial class StateSwing : State
     }
 
     public override void StateExit() {
+        MyAnimationPlayer.Stop();
         MyAnimationPlayer.AnimationFinished -= OnAnimationFinished;
     }
 
