@@ -47,6 +47,7 @@ public partial class StateAttack : State
 
 	public override void StateExit() {
 		MyAnimationPlayer.Stop();
+		MyAnimationPlayer.AnimationFinished -= OnAnimationFinished;
 		_collisionShape2D.Disabled = true;
 	}
 
