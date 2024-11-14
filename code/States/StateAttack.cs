@@ -13,6 +13,7 @@ public partial class StateAttack : State
 
 	private Area2D           _hitBoxArea2D;
 	private CollisionShape2D _collisionShape2D;
+	private Combo            _currentCombo;
 	
 	public override void _Ready() {
 		_hitBoxArea2D = new Area2D() {
@@ -29,25 +30,26 @@ public partial class StateAttack : State
 	}
 
 	public override void StateEntry(string[] args) {
-		Combo combo = args.Length == 0 ? null : MyComboManager.FindComboOrNull(args[0]);
-		if (combo is null) {
+		_currentCombo = args.Length == 0 ? null : MyComboManager.FindComboOrNull(args[0]);
+		if (_currentCombo is null) {
 			MyStateMachine.SwitchState(_idle, new string[] { });
 			return;
 		}
 
 		_collisionShape2D.Disabled = false;
-		_collisionShape2D.Shape = new RectangleShape2D() { Size = combo.HitBox.Size };
-		_collisionShape2D.Position = GetOwner<Node2D>().ToGlobal(combo.HitBox.Position);
+		_collisionShape2D.Shape = new RectangleShape2D() { Size = _currentCombo.HitBox.Size };
+		_collisionShape2D.Position = GetOwner<Node2D>().ToGlobal(_currentCombo.HitBox.Position);
 		
-		MyAnimationPlayer.AnimationEvent -= OnAnimEvent;
-		MyAnimationPlayer.AnimationEvent += OnAnimEvent;
+		MyAnimationPlayer.Play(_currentCombo.AttackAnimName);
+		MyAnimationPlayer.AnimationFinished -= OnAnimationFinished;
+		MyAnimationPlayer.AnimationFinished += OnAnimationFinished;
 	}
 
 	public override void StateExit() {
 		_collisionShape2D.Disabled = true;
 	}
 
-	private void OnAnimEvent(string tag) {
-		MyStateMachine.SwitchState(_cooldown, new string[] { });
+	private void OnAnimationFinished(StringName animName) {
+		MyStateMachine.SwitchState(_cooldown, new string[] { _currentCombo.Name });
 	}
 }

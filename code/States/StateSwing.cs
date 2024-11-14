@@ -45,18 +45,19 @@ public partial class StateSwing : State
             return;
         }
         
-        MyAnimationPlayer.AnimationEvent += OnAnimEvent;
-        MyAnimationPlayer.Play(_currentCombo.AnimationName);
+        MyAnimationPlayer.Play(_currentCombo.SwingAnimName);
+        MyAnimationPlayer.AnimationFinished -= OnAnimationFinished;
+        MyAnimationPlayer.AnimationFinished += OnAnimationFinished;
         
         _body.Velocity = Vector2.Zero;
         _body.MoveAndSlide();
     }
 
     public override void StateExit() {
-        MyAnimationPlayer.AnimationEvent -= OnAnimEvent;
+        MyAnimationPlayer.AnimationFinished -= OnAnimationFinished;
     }
 
-    private void OnAnimEvent(string tag) {
+    private void OnAnimationFinished(StringName animName) {
         MyStateMachine.SwitchState(_attack, new string[] { _currentCombo.Name });
     }
 }

@@ -8,8 +8,14 @@ public partial class StateCooldown : State
 	[Export] private StateDeath _death;
 
 	public override void StateEntry(string[] args) {
-		MyAnimationPlayer.AnimationFinished -= OnAnimEvent;
-		MyAnimationPlayer.AnimationFinished += OnAnimEvent;
+		Combo combo = args.Length == 0 ? null : MyComboManager.FindComboOrNull(args[0]);
+		if (combo is null) {
+			MyStateMachine.SwitchState(_idle, new string[] { });
+			return;
+		}
+		
+		MyAnimationPlayer.Play(combo.CooldownAnimName);
+		MyAnimationPlayer.AnimationFinished += OnAnimationFinished;
 	}
 
 	public override void HandleDamage() {
@@ -17,10 +23,10 @@ public partial class StateCooldown : State
 	}
 
 	public override void StateExit() {
-		MyAnimationPlayer.AnimationFinished -= OnAnimEvent;
+		MyAnimationPlayer.AnimationFinished -= OnAnimationFinished;
 	}
 
-	private void OnAnimEvent(StringName animName) {
+	private void OnAnimationFinished(StringName animName) {
 		MyStateMachine.SwitchState(_idle, new string[] { });
 	}
 }
